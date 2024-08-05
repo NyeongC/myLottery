@@ -32,6 +32,13 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// JavaMail API
+	implementation 'javax.mail:javax.mail-api:1.6.2'
+
+	// JavaMail implementation
+	implementation 'com.sun.mail:javax.mail:1.6.2'
+
 }
 
 tasks.named('test') {
