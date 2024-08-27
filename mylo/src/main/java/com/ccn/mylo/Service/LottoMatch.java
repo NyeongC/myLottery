@@ -30,11 +30,14 @@ public class LottoMatch {
             int[] drawnNumbers = selectedNumbers.stream().mapToInt(i -> i).toArray();
 
             // 뽑은 숫자 출력
-            System.out.println("Attempt " + attempt + ": " + selectedNumbers);
+            // 10만 단위로 시도 횟수 출력
+            if (attempt % 100000 == 0) {
+                System.out.println("Attempt: " + attempt);
+            }
 
             // 당첨 번호와 뽑은 번호가 일치하는지 확인
             if (match(winningNumbers, drawnNumbers)) {
-                System.out.println("You won with numbers: " + selectedNumbers);
+                System.out.println("You won after " + attempt + " attempts!");
                 break;
             }
         }
