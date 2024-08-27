@@ -39,6 +39,9 @@ dependencies {
 	// JavaMail implementation
 	implementation 'com.sun.mail:javax.mail:1.6.2'
 
+	// json 처리를 위한 gson 라이브러리 추가
+	implementation 'com.google.code.gson:gson:2.8.9'
+
 }
 
 tasks.named('test') {
