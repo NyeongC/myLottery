@@ -2,6 +2,7 @@ package com.ccn.mylo.Service;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.springframework.stereotype.Service;
 
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -12,8 +13,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Service
 public class LottoMatch {
-    public static void main(String[] args) {
+    public void lottoMatch() {
         // 미리 설정된 당첨 번호
         //int[] winningNumbers = {3, 15, 22, 28, 34, 41};
         // 최신 회차 구하기
@@ -61,7 +63,7 @@ public class LottoMatch {
     }
 
     // 두 배열의 숫자가 동일한지 확인하는 메서드
-    public static boolean match(int[] a, int[] b) {
+    public boolean match(int[] a, int[] b) {
         if (a.length != b.length) {
             return false;
         }
@@ -75,7 +77,7 @@ public class LottoMatch {
     }
 
     // 로또 회차 구하는 메서도
-    public static int getLottoRound(){
+    public int getLottoRound(){
         // 기준 날짜와 기준 회차
         LocalDate baseDate = LocalDate.of(2002, 12, 7);
         int baseRound = 1;
@@ -92,7 +94,7 @@ public class LottoMatch {
     }
 
     // 당첨 번호 구하는 메소드
-    public static int[] getLottoNumbers(int drawNumber) {
+    public int[] getLottoNumbers(int drawNumber) {
         int[] lottoNumbers = new int[6];
         try {
             // URL 설정
@@ -107,6 +109,8 @@ public class LottoMatch {
 
             // JSON 파싱
             JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
+
+            //System.out.println(jsonObject);
 
             // 로또 번호 추출
             lottoNumbers[0] = jsonObject.get("drwtNo1").getAsInt();
