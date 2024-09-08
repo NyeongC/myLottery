@@ -45,18 +45,20 @@ public class LottoMatch {
 
             // 뽑은 숫자 출력
             // 10만 단위로 시도 횟수 출력
-            if (attempt % 100000 == 0) {
+/*            if (attempt % 100000 == 0) {
                 System.out.println("Attempt: " + attempt);
-            }
+            }*/
 
             // 당첨 번호와 뽑은 번호가 일치하는지 확인
             if (match(winningNumbers, drawnNumbers)) {
-                System.out.println("You won after " + attempt + " attempts!");
+                String formattedNumber = String.format("%,d", attempt);
+                System.out.println("You won after " + formattedNumber + " attempts!");
 
                 System.out.println("Lotto numbers for draw " + drawNumber + ":");
                 for (int number : winningNumbers) {
                     System.out.print(number + " ");
                 }
+                System.out.println();
                 break;
             }
         }
