@@ -1,5 +1,6 @@
 package com.ccn.mylo.Service;
 
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.stereotype.Service;
@@ -12,8 +13,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
-public class LottoMatch {
-    public void lottoMatch() {
+public class LottoMatchResult {
+    public String lottoMatch() {
+        StringBuilder resultBuilder = new StringBuilder(); // StringBuilder to accumulate results
+
         // 미리 설정된 당첨 번호
         int drawNumber = getLottoRound();
         int[] winningNumbers = getLottoNumbers(drawNumber);
@@ -50,34 +53,33 @@ public class LottoMatch {
             // 당첨 번호와 뽑은 번호가 일치하는지 확인
             if (match(winningNumbers, drawnNumbers)) {
                 String formattedNumber = String.format("%,d", attempt);
-                System.out.println("You won after " + formattedNumber + " attempts!");
+                resultBuilder.append("You won after ").append(formattedNumber).append(" attempts!\n");
 
-                System.out.println("Lotto numbers for draw " + drawNumber + ":");
+                resultBuilder.append("Lotto numbers for draw ").append(drawNumber).append(":\n");
                 for (int number : winningNumbers) {
-                    System.out.print(number + " ");
+                    resultBuilder.append(number).append(" ");
                 }
-                System.out.println();
+                resultBuilder.append("\n");
 
                 int topN = 20;
 
                 // 가장 많이 뽑힌 topN 개의 숫자 출력
-                printTopNumbers(frequencyMap,topN);
+                resultBuilder.append(printTopNumbers(frequencyMap, topN));
 
                 // 원하는 개수 설정 (예: 2개의 로또 번호 추천)
-                int desiredCount = 2;
-                // 상위 5개 숫자에서 랜덤으로 뽑기
-
-                List<List<Integer>> recommendedLottoNumbers = drawRandomLottoNumbers(frequencyMap, desiredCount,topN);
+                int desiredCount = 5;
+                List<List<Integer>> recommendedLottoNumbers = drawRandomLottoNumbers(frequencyMap, desiredCount, topN);
 
                 // 추천된 로또 번호 출력
                 for (int i = 0; i < recommendedLottoNumbers.size(); i++) {
-                    System.out.println("Recommended Lotto Numbers " + (i + 1) + ": " + recommendedLottoNumbers.get(i));
+                    resultBuilder.append("Recommended Lotto Numbers ").append(i + 1).append(": ")
+                            .append(recommendedLottoNumbers.get(i)).append("\n");
                 }
 
-
-                break;
+                break; // 당첨되면 루프 종료
             }
         }
+        return resultBuilder.toString(); // 최종 결과 문자열 반환
     }
 
     // 두 배열의 숫자가 동일한지 확인하는 메서드
@@ -95,16 +97,19 @@ public class LottoMatch {
     }
 
     // 가장 많이 뽑힌 숫자 출력 메서드
-    private void printTopNumbers(Map<Integer, Integer> frequencyMap, int num) {
+    private String printTopNumbers(Map<Integer, Integer> frequencyMap, int num) {
+        StringBuilder topNumbersBuilder = new StringBuilder();
         List<Map.Entry<Integer, Integer>> entryList = new ArrayList<>(frequencyMap.entrySet());
+
         // 출현 횟수 기준으로 내림차순 정렬
         entryList.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
 
-        System.out.println("Top "+ num + "most drawn numbers:");
+        topNumbersBuilder.append("Top ").append(num).append(" most drawn numbers:\n");
         for (int i = 0; i < Math.min(num, entryList.size()); i++) {
             Map.Entry<Integer, Integer> entry = entryList.get(i);
-            System.out.println("Number: " + entry.getKey() + ", Count: " + entry.getValue());
+            topNumbersBuilder.append("Number: ").append(entry.getKey()).append(", Count: ").append(entry.getValue()).append("\n");
         }
+        return topNumbersBuilder.toString(); // 최상위 번호 문자열 반환
     }
 
     // 로또 회차 구하는 메서드
@@ -184,5 +189,4 @@ public class LottoMatch {
 
         return result; // 추천된 로또 번호 리스트 반환
     }
-
 }

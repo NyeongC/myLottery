@@ -2,6 +2,7 @@ package com.ccn.mylo.scheduler;
 
 import com.ccn.mylo.Service.EmailService;
 import com.ccn.mylo.Service.LottoMatch;
+import com.ccn.mylo.Service.LottoMatchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -19,7 +20,7 @@ public class LottoSchedule {
     private final EmailService emailService;
 
     @Autowired
-    LottoMatch lottoMatch;
+    LottoMatchResult lottoMatch;
 
     @Autowired
     public LottoSchedule(EmailService emailService) {
@@ -35,11 +36,7 @@ public class LottoSchedule {
         String subject = "test";
         String text = "";
 
-        int[] numbers = lottoMatch.getLottoNumbers(lottoMatch.getLottoRound());
-
-        text = Arrays.stream(numbers)
-                .mapToObj(String::valueOf)
-                .collect(Collectors.joining(","));
+        text = lottoMatch.lottoMatch();
 
         emailService.sendEmail(to,subject,text);
 
